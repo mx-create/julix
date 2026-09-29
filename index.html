@@ -138,8 +138,13 @@ h2.title {
 .plat p { color: var(--mute); margin-top: 8px; max-width: 34ch; }
 .plat.primary p { color: var(--on-gold-2); }
 .plat .go { font-weight: 600; font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; }
-.listen-foot { margin-top: 20px; color: var(--dim); font-size: .95rem; }
-.listen-foot a { color: var(--gold-hi); border-bottom: 1px solid rgba(217,164,65,.4); }
+.req {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px 32px; margin-top: 16px;
+  padding: clamp(20px, 3vw, 28px) clamp(22px, 3vw, 32px); border: 1px solid rgba(217,164,65,.55); border-radius: 18px;
+  background: linear-gradient(90deg, rgba(217,164,65,.14), rgba(217,164,65,.03));
+}
+.req h3 { font-family: var(--f-display); font-weight: 800; text-transform: uppercase; font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1; }
+.req p { color: var(--mute); margin-top: 6px; }
 
 /* ---------- about ---------- */
 .about { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(28px, 6vw, 88px); align-items: center; }
@@ -310,7 +315,7 @@ footer { border-top: 1px solid var(--line); padding-block: 44px calc(44px + env(
       <a href="#sound">Sound</a>
       <a href="#shows">Shows</a>
       <a href="#gallery">Gallery</a>
-      <a href="#book">Book</a>
+      <a href="https://music.mxdesign.uk/request/" target="_blank" rel="noopener">Request</a>
     </nav>
     <a class="btn btn-gold btn-sm nav-book" href="#book">Book</a>
     <button class="burger" id="burger" aria-expanded="false" aria-controls="menu" type="button">Menu</button>
@@ -380,7 +385,14 @@ footer { border-top: 1px solid var(--line); padding-block: 44px calc(44px + env(
         </div>
       </a>
     </div>
-    <p class="listen-foot">Want a track in her set? <a href="https://music.mxdesign.uk/request/" target="_blank" rel="noopener">Send a request</a>.</p>
+    <div class="req">
+      <div>
+        <p class="eyebrow">Song requests</p>
+        <h3 style="margin-top:8px">Want a track in her set?</h3>
+        <p>Tell JuLix what you want to hear next.</p>
+      </div>
+      <a class="btn btn-gold" href="https://music.mxdesign.uk/request/" target="_blank" rel="noopener">Send a request →</a>
+    </div>
   </div>
 </section>
 
