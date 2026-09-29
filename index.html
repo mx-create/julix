@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="JuLix is a UK-based DJ, producer, drummer and content creator bringing a South Indian identity to electronic music. Book her for clubs, festivals, resorts and cafés.">
+<meta name="theme-color" content="#0A0A0A">
+<meta property="og:title" content="JuLix DJ">
+<meta property="og:description" content="South Indian roots. Electronic future. DJ, producer and drummer, UK.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="images/hero-wide.jpg">
+</head>
+<body>
+<title>JuLix DJ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout concept: a night-club poster. Full-bleed photography under a condensed display face,
+   one solid-gold band for the numbers, everything else black with warm, quiet greys. */
+:root {
+  --ink: #0A0A0A;
+  --ink-2: #14110D;
+  --ink-3: #1D1912;
+  --line: #2F2819;
+  --gold: #D9A441;
+  --gold-hi: #EDBF6A;
+  --paper: #F4F0E8;
+  --mute: #B8B1A4;
+  --dim: #8C8579;
+  --on-gold: #14100A;
+  --on-gold-2: #3A2C10;
+  --f-display: 'Big Shoulders Display', 'Arial Narrow', Impact, sans-serif;
+  --f-body: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+  --f-mono: 'DM Mono', ui-monospace, Menlo, Consolas, monospace;
+  --gutter: clamp(16px, 4vw, 48px);
+  --max: 1200px;
+  --sec: clamp(72px, 10vw, 132px);
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--f-body);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+h1, h2, h3, p, ul, ol, figure { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+:focus-visible { outline: 2px solid var(--gold-hi); outline-offset: 3px; }
+.wrap { width: 100%; max-width: calc(var(--max) + 2 * var(--gutter)); margin-inline: auto; padding-inline: var(--gutter); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: 12px; top: -60px; z-index: 100; background: var(--gold); color: var(--on-gold); padding: 10px 16px; border-radius: 8px; font-weight: 600; }
+.skip:focus { top: 12px; }
+
+/* ---------- type ---------- */
+.eyebrow { font-family: var(--f-mono); font-size: .8rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+h2.title {
+  font-family: var(--f-display); font-weight: 800; text-transform: uppercase;
+  font-size: clamp(2.8rem, 7vw, 5.2rem); line-height: .92; letter-spacing: .01em;
+  text-wrap: balance; margin-top: 14px;
+}
+.lede { color: var(--mute); max-width: 60ch; margin-top: 18px; }
+.sec { padding-block: var(--sec); }
+.sec-head { display: flex; flex-direction: column; margin-bottom: clamp(32px, 5vw, 56px); }
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .55em;
+  padding: .9em 1.5em; border-radius: 999px; border: 1px solid var(--line);
+  font-family: var(--f-body); font-weight: 600; font-size: .82rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--paper); background: transparent; cursor: pointer; transition: background .2s, border-color .2s, color .2s, transform .2s;
+  min-height: 46px;
+}
+.btn:hover { border-color: var(--gold); background: rgba(217,164,65,.08); }
+.btn-gold { background: var(--gold); border-color: var(--gold); color: var(--on-gold); }
+.btn-gold:hover { background: var(--gold-hi); border-color: var(--gold-hi); }
+.btn-line { border-color: rgba(217,164,65,.55); }
+.btn-sm { padding: .6em 1.1em; min-height: 38px; font-size: .74rem; }
+
+/* ---------- nav ---------- */
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: rgba(10,10,10,.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.nav-in { display: flex; align-items: center; gap: 20px; min-height: 68px; }
+.brand img { width: 108px; height: auto; }
+.menu { display: flex; gap: clamp(16px, 2.4vw, 32px); margin-left: auto; font-size: .82rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 500; }
+.menu a { color: var(--mute); padding: 8px 2px; transition: color .2s; }
+.menu a:hover { color: var(--gold-hi); }
+.burger { display: none; background: none; border: 1px solid var(--line); color: var(--paper); border-radius: 999px; padding: 0 16px; min-height: 40px; font: 600 .74rem var(--f-body); letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+
+/* ---------- hero ---------- */
+.hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
+.hero-media { position: absolute; inset: 0; }
+.hero-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 74% 28%; }
+.hero-media::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(90deg, var(--ink) 0%, rgba(10,10,10,.94) 30%, rgba(10,10,10,.4) 62%, rgba(10,10,10,0) 100%),
+    linear-gradient(0deg, var(--ink) 0%, rgba(10,10,10,0) 28%);
+}
+.hero-in { position: relative; z-index: 1; min-height: clamp(560px, 62vw, 740px); display: flex; align-items: flex-end; padding-block: clamp(48px, 8vw, 96px); }
+.hero-copy { max-width: 760px; animation: rise .9s cubic-bezier(.2,.7,.2,1) both; }
+.hero h1 {
+  font-family: var(--f-display); font-weight: 900; text-transform: uppercase;
+  font-size: clamp(3rem, 10.5vw, 8.4rem); line-height: .88; letter-spacing: .005em; margin-top: 18px;
+}
+.hero h1 span { color: var(--gold); display: block; }
+.hero p.sub { color: var(--mute); font-size: clamp(1rem, 1.5vw, 1.15rem); max-width: 52ch; margin-top: 22px; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.hero-note { font-family: var(--f-mono); font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); margin-top: 26px; }
+@keyframes rise { from { transform: translateY(14px); } to { transform: none; } }
+
+/* ---------- genre band ---------- */
+.genres { border-bottom: 1px solid var(--line); background: var(--ink-2); }
+.genres ul { display: flex; flex-wrap: wrap; padding-block: 22px; font-family: var(--f-display); font-weight: 800; text-transform: uppercase; font-size: clamp(1.4rem, 3vw, 2.2rem); letter-spacing: .04em; }
+.genres li { display: flex; align-items: center; color: var(--paper); }
+.genres li + li::before { content: "/"; color: var(--gold); padding-inline: .7em; }
+
+/* ---------- listen ---------- */
+.listen-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 16px; }
+.plat {
+  display: flex; flex-direction: column; justify-content: space-between; gap: 40px; min-height: 220px; padding: clamp(22px, 3vw, 32px);
+  background: var(--ink-2); border: 1px solid var(--line); border-radius: 18px; transition: border-color .2s, background .2s, transform .2s;
+}
+.plat:hover { border-color: var(--gold); background: var(--ink-3); transform: translateY(-2px); }
+.plat.primary { background: var(--gold); border-color: var(--gold); color: var(--on-gold); }
+.plat.primary:hover { background: var(--gold-hi); }
+.plat .k { font-family: var(--f-mono); font-size: .76rem; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+.plat.primary .k { color: var(--on-gold-2); }
+.plat h3 { font-family: var(--f-display); font-weight: 800; text-transform: uppercase; font-size: clamp(2rem, 4vw, 3rem); line-height: .95; }
+.plat p { color: var(--mute); margin-top: 8px; max-width: 34ch; }
+.plat.primary p { color: var(--on-gold-2); }
+.plat .go { font-weight: 600; font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; }
+.listen-foot { margin-top: 20px; color: var(--dim); font-size: .95rem; }
+.listen-foot a { color: var(--gold-hi); border-bottom: 1px solid rgba(217,164,65,.4); }
+
+/* ---------- about ---------- */
+.about { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(28px, 6vw, 88px); align-items: center; }
+.about-photo { border-radius: 20px; overflow: hidden; border: 1px solid var(--line); max-width: 520px; }
+.about-photo img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
+.about-copy p + p { margin-top: 16px; }
+.about-copy .body { color: var(--mute); margin-top: 22px; max-width: 58ch; }
+.about-copy .body p { color: var(--mute); }
+.quote { margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--line); font-family: var(--f-display); font-weight: 700; text-transform: uppercase; font-size: clamp(1.5rem, 3vw, 2.1rem); line-height: 1.08; letter-spacing: .01em; color: var(--paper); text-wrap: balance; }
+.quote cite { display: block; margin-top: 12px; font: 400 .78rem var(--f-mono); letter-spacing: .16em; color: var(--gold); font-style: normal; }
+.roles { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+.roles li { font-family: var(--f-mono); font-size: .76rem; letter-spacing: .12em; text-transform: uppercase; padding: 8px 14px; border: 1px solid rgba(217,164,65,.5); border-radius: 999px; color: var(--gold-hi); }
+.label-note { margin-top: 26px; color: var(--dim); font-size: .95rem; }
+.label-note a { color: var(--gold-hi); border-bottom: 1px solid rgba(217,164,65,.4); }
+
+/* ---------- sound ---------- */
+.sound { background: var(--ink-2); border-block: 1px solid var(--line); }
+.sound-list li { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px 48px; align-items: baseline; padding-block: clamp(22px, 3vw, 34px); border-top: 1px solid var(--line); }
+.sound-list li:last-child { border-bottom: 1px solid var(--line); }
+.sound-list h3 { font-family: var(--f-display); font-weight: 800; text-transform: uppercase; font-size: clamp(1.9rem, 4.4vw, 3.2rem); line-height: .95; text-wrap: balance; }
+.sound-list h3 i { font-style: normal; color: var(--gold); padding-inline: .12em; }
+.sound-list p { color: var(--mute); max-width: 46ch; }
+
+/* ---------- journey ---------- */
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; counter-reset: s; }
+.steps li { padding: 26px clamp(14px, 2vw, 28px) 4px 0; border-top: 1px solid var(--line); }
+.steps li + li { padding-left: clamp(14px, 2vw, 28px); border-left: 1px solid var(--line); }
+.steps .n { font-family: var(--f-mono); font-size: .8rem; letter-spacing: .18em; color: var(--gold); }
+.steps h3 { font-family: var(--f-display); font-weight: 800; text-transform: uppercase; font-size: clamp(1.8rem, 3.4vw, 2.6rem); line-height: 1; margin-top: 10px; }
+.steps p { color: var(--mute); margin-top: 10px; font-size: .98rem; }
+
+/* ---------- shows ---------- */
+.shows { background: var(--ink-2); border-block: 1px solid var(--line); }
+.events { display: flex; flex-direction: column; }
+.state { color: var(--mute); padding: 28px 0; }
+.state .row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.evt { display: grid; grid-template-columns: 112px minmax(0, 1fr) auto; gap: 8px 32px; align-items: center; padding-block: 26px; border-top: 1px solid var(--line); }
+.evt:last-child { border-bottom: 1px solid var(--line); }
+.evt-date { font-family: var(--f-display); font-weight: 800; line-height: .9; text-transform: uppercase; }
+.evt-date .d { display: block; font-size: 3.6rem; color: var(--paper); }
+.evt-date .m { display: block; font: 500 .78rem var(--f-mono); letter-spacing: .14em; color: var(--gold); margin-top: 6px; }
+.evt h3 { font-family: var(--f-display); font-weight: 800; text-transform: uppercase; font-size: clamp(1.6rem, 3.4vw, 2.4rem); line-height: 1; }
+.evt h3 .with { font-family: var(--f-body); font-weight: 500; font-size: .5em; letter-spacing: 0; text-transform: none; color: var(--mute); }
+.evt .loc { font-family: var(--f-mono); font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; color: var(--mute); margin-top: 8px; }
+.evt .flag { display: inline-block; font: 500 .7rem var(--f-mono); letter-spacing: .16em; color: var(--ink); background: var(--gold); padding: 3px 9px; border-radius: 4px; margin-bottom: 10px; }
+.evt .cd { font-family: var(--f-mono); font-variant-numeric: tabular-nums; font-size: .95rem; letter-spacing: .06em; color: var(--gold-hi); margin-top: 10px; }
+.evt.feat { padding-block: 34px; }
+.evt.feat .evt-date .d { color: var(--gold); font-size: 4.6rem; }
+.sample-tag { font-family: var(--f-mono); font-size: .74rem; letter-spacing: .14em; color: var(--dim); margin-bottom: 8px; text-transform: uppercase; }
+
+/* ---------- reach (the one solid-gold moment) ---------- */
+.reach { background: var(--gold); color: var(--on-gold); }
+.reach .eyebrow { color: var(--on-gold-2); }
+.reach h2.title { color: var(--on-gold); }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(12px, 3vw, 40px); margin-top: clamp(28px, 4vw, 48px); }
+.stat { border-top: 2px solid var(--on-gold); padding-top: 16px; }
+.stat .num { font-family: var(--f-display); font-weight: 900; font-size: clamp(3.8rem, 11vw, 8.6rem); line-height: .85; font-variant-numeric: tabular-nums; }
+.stat .lab { font-weight: 600; margin-top: 10px; color: var(--on-gold-2); }
+.award { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 12px 40px; margin-top: clamp(32px, 5vw, 56px); padding-top: 24px; border-top: 1px solid rgba(20,16,10,.35); }
+.award h3 { font-family: var(--f-display); font-weight: 800; text-transform: uppercase; font-size: clamp(1.7rem, 3.4vw, 2.5rem); line-height: 1; }
+.award p { color: var(--on-gold-2); max-width: 52ch; }
+.reach .src { font-family: var(--f-mono); font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--on-gold-2); margin-top: 28px; }
+
+/* ---------- gallery ---------- */
+.masonry { columns: 3; column-gap: 14px; }
+.tile { display: block; width: 100%; margin: 0 0 14px; padding: 0; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--ink-2); cursor: zoom-in; break-inside: avoid; position: relative; }
+.tile img { width: 100%; transition: transform .5s cubic-bezier(.2,.7,.2,1); }
+.tile:hover img { transform: scale(1.03); }
+.lb { position: fixed; inset: 0; z-index: 200; background: rgba(6,6,6,.94); display: flex; align-items: center; justify-content: center; padding: 56px 16px 24px; }
+.lb img { max-width: 100%; max-height: 100%; border-radius: 10px; object-fit: contain; }
+.lb button { position: absolute; top: max(14px, env(safe-area-inset-top, 0px)); right: 14px; }
+
+/* ---------- book ---------- */
+.book { background: var(--ink-2); border-top: 1px solid var(--line); }
+.book-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: clamp(28px, 6vw, 80px); align-items: start; }
+.contact-rows { margin-top: 26px; display: flex; flex-direction: column; }
+.crow { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 16px; border-top: 1px solid var(--line); flex-wrap: wrap; }
+.crow:last-child { border-bottom: 1px solid var(--line); }
+.crow .k { font-family: var(--f-mono); font-size: .74rem; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+.crow .v { font-weight: 600; font-size: 1.05rem; overflow-wrap: anywhere; user-select: all; }
+.crow > div { min-width: 0; }
+.labelbox { margin-top: 30px; padding: 22px 24px; border: 1px solid var(--line); border-radius: 16px; background: var(--ink); }
+.labelbox h3 { font-family: var(--f-display); font-weight: 800; text-transform: uppercase; font-size: 1.7rem; line-height: 1; }
+.labelbox p { color: var(--mute); margin-top: 8px; font-size: .98rem; }
+form.enq { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: clamp(20px, 3vw, 32px); background: var(--ink); border: 1px solid var(--line); border-radius: 20px; }
+.enq h3 { grid-column: 1 / -1; font-family: var(--f-display); font-weight: 800; text-transform: uppercase; font-size: 1.9rem; line-height: 1; }
+.enq .full { grid-column: 1 / -1; }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field label { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
+.field input, .field select, .field textarea {
+  width: 100%; background: var(--ink-3); border: 1px solid var(--line); border-radius: 10px; color: var(--paper);
+  font: 400 1rem var(--f-body); padding: 12px 14px; min-height: 46px;
+}
+.field textarea { min-height: 110px; resize: vertical; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--gold); }
+.enq-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.enq-note { grid-column: 1 / -1; color: var(--dim); font-size: .88rem; }
+
+/* ---------- footer ---------- */
+footer { border-top: 1px solid var(--line); padding-block: 44px calc(44px + env(safe-area-inset-bottom, 0px)); }
+.foot { display: grid; grid-template-columns: 1fr auto; gap: 24px 40px; align-items: start; }
+.foot img { width: 128px; }
+.foot .links { display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: .82rem; letter-spacing: .1em; text-transform: uppercase; color: var(--mute); }
+.foot .links a:hover { color: var(--gold-hi); }
+.legal { grid-column: 1 / -1; padding-top: 22px; border-top: 1px solid var(--line); color: var(--dim); font-size: .88rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 960px) {
+  .listen-grid { grid-template-columns: 1fr 1fr; }
+  .plat.primary { grid-column: 1 / -1; min-height: 190px; }
+  .about { grid-template-columns: 1fr; }
+  .about-photo { max-width: 440px; }
+  .steps { grid-template-columns: 1fr 1fr; row-gap: 8px; }
+  .steps li:nth-child(3) { border-left: 0; padding-left: 0; }
+  .book-grid { grid-template-columns: 1fr; }
+  .masonry { columns: 2; }
+}
+@media (max-width: 760px) {
+  .burger { display: inline-flex; align-items: center; margin-left: auto; }
+  .nav-in { gap: 10px; }
+  .nav-book { order: 2; }
+  .burger { order: 3; margin-left: 0; }
+  .brand { margin-right: auto; }
+  .menu { display: none; position: absolute; left: 0; right: 0; top: 100%; flex-direction: column; gap: 0; margin: 0; padding: 8px var(--gutter) 18px; background: rgba(10,10,10,.98); border-bottom: 1px solid var(--line); font-size: .95rem; }
+  .menu.open { display: flex; }
+  .menu a { padding: 14px 0; border-top: 1px solid var(--line); }
+  .menu a:first-child { border-top: 0; }
+  .hero-media { position: relative; inset: auto; aspect-ratio: 4 / 5; max-height: 74vh; }
+  .hero-media img { object-position: 50% 30%; }
+  .hero-media::after { background: linear-gradient(0deg, var(--ink) 0%, rgba(10,10,10,.0) 45%); }
+  .hero-in { min-height: 0; margin-top: -84px; padding-block: 0 44px; }
+  .sound-list li { grid-template-columns: 1fr; gap: 8px; }
+  .evt { grid-template-columns: 76px minmax(0, 1fr); }
+  .evt-date .d { font-size: 2.8rem; }
+  .evt.feat .evt-date .d { font-size: 3.4rem; }
+  .evt .side { grid-column: 1 / -1; }
+  .stats { grid-template-columns: 1fr; gap: 22px; }
+  .award { grid-template-columns: 1fr; }
+  form.enq { grid-template-columns: 1fr; }
+  .genres li { gap: 0; }
+  .genres li + li::before { margin-left: 0; }
+  .genres ul { gap: 2px 0; }
+  .foot { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .listen-grid { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr; }
+  .steps li, .steps li + li { border-left: 0; padding-left: 0; }
+  .masonry { columns: 2; column-gap: 10px; }
+  .tile { margin-bottom: 10px; border-radius: 10px; }
+  .brand img { width: 92px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .hero-copy { animation: none; }
+  .tile img, .plat, .btn { transition: none; }
+}
+</style>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="top">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top" aria-label="JuLix, back to top"><img src="images/logo.png" alt="JULIX" width="719" height="182"></a>
+    <nav class="menu" id="menu" aria-label="Main">
+      <a href="#listen">Listen</a>
+      <a href="#about">About</a>
+      <a href="#sound">Sound</a>
+      <a href="#shows">Shows</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#book">Book</a>
+    </nav>
+    <a class="btn btn-gold btn-sm nav-book" href="#book">Book</a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="menu" type="button">Menu</button>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero" aria-label="Introduction">
+  <div class="hero-media">
+    <picture>
+      <source media="(max-width: 760px)" srcset="images/hero-portrait.jpg">
+      <img src="images/hero-wide.jpg" alt="JuLix at the decks with one arm raised, lit by beams of stage light" width="2000" height="1333" fetchpriority="high">
+    </picture>
+  </div>
+  <div class="wrap hero-in">
+    <div class="hero-copy">
+      <p class="eyebrow">DJ · Producer · Drummer · Content creator</p>
+      <h1>South Indian roots. <span>Electronic future.</span></h1>
+      <p class="sub">Techno, House and EDM carrying the rhythms, melodies and energy of Kerala. Clubs, festivals, resorts and cafés across the UK and Ireland.</p>
+      <div class="hero-cta">
+        <a class="btn btn-gold" href="#book">Book JuLix</a>
+        <a class="btn btn-line" href="#listen">Listen now</a>
+      </div>
+      <p class="hero-note">Award · CS Global Malayali Awards 2026</p>
+    </div>
+  </div>
+</section>
+
+<div class="genres" aria-label="Genres">
+  <div class="wrap">
+    <ul>
+      <li>Techno</li><li>EDM</li><li>House</li><li>Commercial</li><li>Desi bass</li>
+    </ul>
+  </div>
+</div>
+
+<section class="sec" id="listen">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Listen</p>
+      <h2 class="title">Hear the sound</h2>
+    </div>
+    <div class="listen-grid">
+      <a class="plat primary" href="https://open.spotify.com/artist/17z0B7roqXptI7sGYqhN4e" target="_blank" rel="noopener">
+        <div><p class="k">Streaming</p></div>
+        <div>
+          <h3>Spotify</h3>
+          <p>Releases on Julix&amp;Mx, streaming worldwide.</p>
+          <p class="go" style="margin-top:18px">Open on Spotify →</p>
+        </div>
+      </a>
+      <a class="plat" href="https://www.mixcloud.com/mxdesign/" target="_blank" rel="noopener">
+        <div><p class="k">DJ mixes</p></div>
+        <div>
+          <h3>Mixcloud</h3>
+          <p>Full sets and mixes.</p>
+          <p class="go" style="margin-top:18px; color:var(--gold-hi)">Listen →</p>
+        </div>
+      </a>
+      <a class="plat" href="https://www.youtube.com/@JulixAndMx" target="_blank" rel="noopener">
+        <div><p class="k">Watch</p></div>
+        <div>
+          <h3>YouTube</h3>
+          <p>Sets, mashups and behind-the-scenes.</p>
+          <p class="go" style="margin-top:18px; color:var(--gold-hi)">Watch →</p>
+        </div>
+      </a>
+    </div>
+    <p class="listen-foot">Want a track in her set? <a href="https://music.mxdesign.uk/request/" target="_blank" rel="noopener">Send a request</a>.</p>
+  </div>
+</section>
+
+<section class="sec" id="about" style="padding-top:0">
+  <div class="wrap about">
+    <figure class="about-photo">
+      <img src="images/about.jpg" alt="Portrait of JuLix with teal braids in neon light" width="1000" height="1333" loading="lazy">
+    </figure>
+    <div class="about-copy">
+      <p class="eyebrow">About</p>
+      <h2 class="title">Kerala roots, club-focused sound</h2>
+      <div class="body">
+        <p>JuLix is a UK-based DJ, producer, drummer and content creator bringing a distinctive South Indian identity to electronic music.</p>
+        <p>Her sets blend Techno, House and EDM with the rhythms, melodies and energy of her Kerala roots, creating a sound that is both club-focused and culturally unique.</p>
+        <p>From clubs across the UK and Ireland to destinations, resorts and cafés, she brings an energetic, immersive approach to every performance.</p>
+      </div>
+      <blockquote class="quote" style="margin-inline:0">
+        For me, DJing is about connection — reading the room, building tension, and letting it all go at just the right moment.
+        <cite>JuLix</cite>
+      </blockquote>
+      <ul class="roles" aria-label="Roles">
+        <li>DJ</li><li>Producer</li><li>Drummer</li><li>Content creator</li>
+      </ul>
+      <p class="label-note">JuLix co-owns the independent label Julix&amp;Mx. <a href="https://music.mxdesign.uk" target="_blank" rel="noopener">Visit the label site</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec sound" id="sound">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Sound</p>
+      <h2 class="title">The JuLix sound</h2>
+    </div>
+    <ul class="sound-list">
+      <li><h3>Techno <i>×</i> ethnic sounds</h3><p>Dark, driving electronic grooves fused with South Indian musical textures.</p></li>
+      <li><h3>House <i>×</i> Malayalam</h3><p>Groove-heavy House featuring Malayalam sounds, vocals and cultural elements.</p></li>
+      <li><h3>EDM <i>×</i> South Indian</h3><p>High-energy electronic moments designed for festival and club environments.</p></li>
+      <li><h3>Mashups <i>×</i> live energy</h3><p>Unexpected transitions and genre-crossing selections that keep the dancefloor moving.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec" id="journey">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Journey</p>
+      <h2 class="title">From drum kit to decks</h2>
+    </div>
+    <ol class="steps">
+      <li><span class="n">01</span><h3>Drummer</h3><p>Started on drums at 12, building her foundation in rhythm and live music.</p></li>
+      <li><span class="n">02</span><h3>DJ</h3><p>Performs at clubs, destinations, resorts and cafés across the UK and Ireland.</p></li>
+      <li><span class="n">03</span><h3>Producer</h3><p>Co-owner of the independent label Julix&amp;Mx, with releases on major streaming platforms.</p></li>
+      <li><span class="n">04</span><h3>Creator</h3><p>DJ sets, mixes, mashups and behind-the-scenes content across social media and YouTube.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec shows" id="shows">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Shows</p>
+      <h2 class="title">Next events</h2>
+    </div>
+    <div class="events" id="events" aria-live="polite"><p class="state">Loading shows…</p></div>
+  </div>
+</section>
+
+<section class="sec reach" id="reach">
+  <div class="wrap">
+    <p class="eyebrow">Reach</p>
+    <h2 class="title">Recognition and reach</h2>
+    <div class="stats">
+      <div class="stat"><p class="num">50K+</p><p class="lab">Instagram followers</p></div>
+      <div class="stat"><p class="num">2.2M</p><p class="lab">Views in the last 30 days</p></div>
+      <div class="stat"><p class="num">2M</p><p class="lab">Views on her top reel</p></div>
+    </div>
+    <div class="award">
+      <div><p class="eyebrow" style="color:var(--on-gold-2)">Award · 2026</p><h3 style="margin-top:8px">CS Global Malayali Awards</h3></div>
+      <p>Her first award, recognising her DJing and her involvement in the Malayali community.</p>
+    </div>
+    <p class="src">Instagram figures, September 2026</p>
+  </div>
+</section>
+
+<section class="sec" id="gallery">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Gallery</p>
+      <h2 class="title">On the night</h2>
+    </div>
+    <div class="masonry" id="masonry">
+      <button class="tile" type="button" data-src="images/g-red.jpg" data-alt="JuLix with her arm raised in red stage light and sparks"><img src="images/g-red.jpg" alt="JuLix with her arm raised in red stage light and sparks" width="866" height="1300" loading="lazy"></button>
+      <button class="tile" type="button" data-src="images/g-bw.jpg" data-alt="Black and white shot of JuLix under beams of light"><img src="images/g-bw.jpg" alt="Black and white shot of JuLix under beams of light" width="1400" height="933" loading="lazy"></button>
+      <button class="tile" type="button" data-src="images/g-decks.jpg" data-alt="JuLix mixing on a Pioneer DJ console"><img src="images/g-decks.jpg" alt="JuLix mixing on a Pioneer DJ console" width="975" height="1300" loading="lazy"></button>
+      <button class="tile" type="button" data-src="images/g-purple.jpg" data-alt="JuLix at the decks in front of a purple astronaut mural"><img src="images/g-purple.jpg" alt="JuLix at the decks in front of a purple astronaut mural" width="1400" height="933" loading="lazy"></button>
+      <button class="tile" type="button" data-src="images/g-gold.jpg" data-alt="JuLix silhouetted in a golden beam of light"><img src="images/g-gold.jpg" alt="JuLix silhouetted in a golden beam of light" width="1074" height="1300" loading="lazy"></button>
+      <button class="tile" type="button" data-src="images/g-point.jpg" data-alt="JuLix pointing to the crowd under red light"><img src="images/g-point.jpg" alt="JuLix pointing to the crowd under red light" width="866" height="1300" loading="lazy"></button>
+    </div>
+  </div>
+</section>
+
+<section class="sec book" id="book">
+  <div class="wrap book-grid">
+    <div>
+      <p class="eyebrow">Bookings</p>
+      <h2 class="title">Bring the JuLix experience</h2>
+      <p class="lede">Clubs, festivals, resorts, cafés, destination events and daytime raves. Send the date, place and event type to check availability.</p>
+      <div class="contact-rows">
+        <div class="crow">
+          <div><p class="k">WhatsApp</p><p class="v">+44 7587 328287</p></div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap">
+            <a class="btn btn-gold btn-sm" id="wa-direct" href="https://api.whatsapp.com/send?phone=447587328287&amp;text=Hey!%20Are%20you%20available%20for%20a%20DJ%20set%3F" target="_blank" rel="noopener">Message</a>
+            <button class="btn btn-sm" type="button" data-copy="+44 7587 328287">Copy</button>
+          </div>
+        </div>
+        <div class="crow">
+          <div><p class="k">Email</p><p class="v">julix.mx@outlook.com</p></div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap">
+            <a class="btn btn-sm" href="mailto:julix.mx@outlook.com">Open email</a>
+            <button class="btn btn-sm" type="button" data-copy="julix.mx@outlook.com">Copy</button>
+          </div>
+        </div>
+        <div class="crow">
+          <div><p class="k">Instagram</p><p class="v">@julixofficial</p></div>
+          <a class="btn btn-sm" href="https://instagram.com/julixofficial" target="_blank" rel="noopener">Follow</a>
+        </div>
+      </div>
+      <div class="labelbox">
+        <h3>Label and licensing</h3>
+        <p>Rights, sync, collaborations and press enquiries go through Julix&amp;Mx. Press kit and technical rider available on request.</p>
+        <div style="margin-top:16px; display:flex; gap:8px; flex-wrap:wrap">
+          <a class="btn btn-sm btn-line" href="mailto:julix.mx@outlook.com?subject=Label%20and%20licensing%20enquiry">Email the label</a>
+          <button class="btn btn-sm" type="button" data-copy="julix.mx@outlook.com">Copy address</button>
+        </div>
+      </div>
+    </div>
+
+    <form class="enq" id="enq" novalidate>
+      <h3>Booking enquiry</h3>
+      <div class="field"><label for="f-name">Your name</label><input id="f-name" name="name" type="text" autocomplete="name"></div>
+      <div class="field"><label for="f-type">Event type</label>
+        <select id="f-type" name="type">
+          <option>Club night</option><option>Festival</option><option>Resort</option><option>Café</option><option>Destination event</option><option>Daytime rave</option><option>Private event</option><option>Other</option>
+        </select>
+      </div>
+      <div class="field"><label for="f-date">Date</label><input id="f-date" name="date" type="text" placeholder="e.g. 14 Feb 2027" autocomplete="off"></div>
+      <div class="field"><label for="f-place">Venue and city</label><input id="f-place" name="place" type="text" autocomplete="off"></div>
+      <div class="field full"><label for="f-msg">Anything else</label><textarea id="f-msg" name="msg" placeholder="Set length, sound system, budget range…"></textarea></div>
+      <div class="enq-actions">
+        <a class="btn btn-gold" id="wa-send" href="#" target="_blank" rel="noopener">Send on WhatsApp</a>
+        <button class="btn" id="copy-mail" type="button">Copy as email</button>
+      </div>
+      <p class="enq-note" id="enq-note">Sending opens WhatsApp with your details filled in. To use email instead, copy the text and send it to julix.mx@outlook.com.</p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <img src="images/logo.png" alt="JULIX" width="719" height="182" loading="lazy">
+    </div>
+    <nav class="links" aria-label="Social">
+      <a href="https://open.spotify.com/artist/17z0B7roqXptI7sGYqhN4e" target="_blank" rel="noopener">Spotify</a>
+      <a href="https://instagram.com/julixofficial" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.youtube.com/@JulixAndMx" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://www.mixcloud.com/mxdesign/" target="_blank" rel="noopener">Mixcloud</a>
+    </nav>
+    <div class="legal">
+      <span>© <span id="yr">2026</span> Julix&amp;Mx. All rights reserved.</span>
+      <span>JuLix · DJ, producer and drummer · UK</span>
+    </div>
+  </div>
+</footer>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Photo">
+  <button class="btn btn-sm" id="lb-close" type="button">Close</button>
+  <img id="lb-img" src="" alt="">
+</div>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"JuLix","jobTitle":"DJ, music producer and drummer","description":"UK-based DJ, producer, drummer and content creator bringing a South Indian identity to electronic music.","sameAs":["https://open.spotify.com/artist/17z0B7roqXptI7sGYqhN4e","https://instagram.com/julixofficial","https://www.youtube.com/@JulixAndMx","https://www.mixcloud.com/mxdesign/"],"affiliation":{"@type":"Organization","name":"Julix&Mx"}}
+</script>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------- config (change these on the live site) ---------- */
+  var SHEET_ID = '1JD0T5VLqiKbqeYkOcG7i24WnSPzTog_UaKtUC8szVY4';
+  var WA_NUMBER = '447587328287';
+  var USE_PROXY_FALLBACK = true; // the current site uses these when Google blocks the direct request
+
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+
+  $('#yr').textContent = new Date().getFullYear();
+
+  /* ---------- nav ---------- */
+  var burger = $('#burger'), menu = $('#menu');
+  burger.addEventListener('click', function () {
+    var open = menu.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    burger.textContent = open ? 'Close' : 'Menu';
+  });
+  $$('#menu a').forEach(function (a) { a.addEventListener('click', function () {
+    menu.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); burger.textContent = 'Menu';
+  }); });
+
+  /* ---------- copy buttons ---------- */
+  function flash(btn, text) {
+    var old = btn.getAttribute('data-label') || btn.textContent;
+    btn.setAttribute('data-label', old);
+    btn.textContent = text;
+    setTimeout(function () { btn.textContent = old; }, 1600);
+  }
+  function copyText(text, btn) {
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+      flash(btn, ok ? 'Copied' : 'Select and copy');
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { flash(btn, 'Copied'); }, fallback);
+    } else { fallback(); }
+  }
+  $$('[data-copy]').forEach(function (b) { b.addEventListener('click', function () { copyText(b.getAttribute('data-copy'), b); }); });
+
+  /* ---------- booking composer ---------- */
+  function buildMsg() {
+    var name = $('#f-name').value.trim(), type = $('#f-type').value, date = $('#f-date').value.trim(),
+        place = $('#f-place').value.trim(), msg = $('#f-msg').value.trim();
+    var lines = ['Hi JuLix, I would like to check availability for a booking.'];
+    if (name) lines.push('Name: ' + name);
+    lines.push('Event type: ' + type);
+    if (date) lines.push('Date: ' + date);
+    if (place) lines.push('Venue and city: ' + place);
+    if (msg) lines.push('Details: ' + msg);
+    return lines.join('\n');
+  }
+  function refreshWA() {
+    $('#wa-send').setAttribute('href', 'https://api.whatsapp.com/send?phone=' + WA_NUMBER + '&text=' + encodeURIComponent(buildMsg()));
+  }
+  $$('#enq input, #enq select, #enq textarea').forEach(function (el) { el.addEventListener('input', refreshWA); el.addEventListener('change', refreshWA); });
+  $('#enq').addEventListener('submit', function (e) { e.preventDefault(); });
+  $('#copy-mail').addEventListener('click', function () {
+    copyText('To: julix.mx@outlook.com\nSubject: Booking enquiry\n\n' + buildMsg(), this);
+  });
+  refreshWA();
+
+  /* ---------- gallery lightbox ---------- */
+  var lb = $('#lb'), lbImg = $('#lb-img'), lastTile = null;
+  function closeLb() { lb.hidden = true; lbImg.src = ''; document.body.style.overflow = ''; if (lastTile) lastTile.focus(); }
+  $$('.tile').forEach(function (t) { t.addEventListener('click', function () {
+    lastTile = t; lbImg.src = t.getAttribute('data-src'); lbImg.alt = t.getAttribute('data-alt') || '';
+    lb.hidden = false; document.body.style.overflow = 'hidden'; $('#lb-close').focus();
+  }); });
+  $('#lb-close').addEventListener('click', closeLb);
+  lb.addEventListener('click', function (e) { if (e.target === lb) closeLb(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !lb.hidden) closeLb(); });
+
+  /* ---------- next events (Google Sheet feed) ---------- */
+  var listEl = $('#events');
+  var MON = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+  var cdTimer = null;
+
+  function parseCSV(text) {
+    var rows = [], row = [], val = '', i = 0, q = false, c;
+    while (i < text.length) {
+      c = text[i];
+      if (q) {
+        if (c === '"') { if (text[i + 1] === '"') { val += '"'; i++; } else q = false; }
+        else val += c;
+      } else {
+        if (c === '"') q = true;
+        else if (c === ',') { row.push(val); val = ''; }
+        else if (c === '\n') { row.push(val); rows.push(row); row = []; val = ''; }
+        else if (c === '\r') { /* skip */ }
+        else val += c;
+      }
+      i++;
+    }
+    if (val !== '' || row.length) { row.push(val); rows.push(row); }
+    return rows;
+  }
+  function parseDate(s) {
+    s = (s || '').trim();
+    var m = s.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
+    if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
+    m = s.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/);
+    if (m) return new Date(+m[3], +m[2] - 1, +m[1]);
+    var d = new Date(s); return isNaN(d) ? null : d;
+  }
+  function two(n) { return ('0' + n).slice(-2); }
+
+  function showEmpty(msg) {
+    listEl.innerHTML = '<div class="state"><p>' + esc(msg) + '</p><div class="row">' +
+      '<a class="btn btn-gold btn-sm" href="https://instagram.com/julixofficial" target="_blank" rel="noopener">Follow for dates</a>' +
+      '<a class="btn btn-sm" href="#book">Check availability</a></div></div>';
+  }
+
+  function render(events, sample) {
+    if (cdTimer) { clearInterval(cdTimer); cdTimer = null; }
+    if (!events.length) { showEmpty('No upcoming shows right now. New dates are added as soon as they are confirmed.'); return; }
+    var html = sample ? '<p class="sample-tag">Sample dates for layout preview only</p>' : '';
+    events.forEach(function (e, i) {
+      var feat = i === 0;
+      var tix = /^https?:\/\//i.test((e.tix || '').trim())
+        ? '<a class="btn ' + (feat ? 'btn-gold' : '') + ' btn-sm" href="' + esc(e.tix.trim()) + '" target="_blank" rel="noopener">Tickets</a>' : '';
+      html += '<article class="evt' + (feat ? ' feat' : '') + '">' +
+        '<div class="evt-date"><span class="d">' + two(e.date.getDate()) + '</span><span class="m">' + MON[e.date.getMonth()] + ' ' + e.date.getFullYear() + '</span></div>' +
+        '<div>' + (feat ? '<span class="flag">NEXT SHOW</span>' : '') +
+          '<h3>' + esc(e.title) + (e.support ? ' <span class="with">/ ' + esc(e.support) + '</span>' : '') + '</h3>' +
+          '<p class="loc">' + esc(e.loc || 'Location TBA') + '</p>' +
+          (feat ? '<p class="cd" data-cd="' + e.date.getTime() + '">—</p>' : '') +
+        '</div>' +
+        '<div class="side">' + tix + '</div>' +
+      '</article>';
+    });
+    listEl.innerHTML = html;
+    var cd = $('[data-cd]', listEl);
+    if (cd) {
+      var upd = function () {
+        var diff = +cd.getAttribute('data-cd') - Date.now();
+        if (diff <= 0) { cd.textContent = 'Happening now'; return; }
+        var s = Math.floor(diff / 1000), d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60), sec = s % 60;
+        cd.textContent = d + 'D ' + two(h) + 'H ' + two(m) + 'M ' + two(sec) + 'S';
+      };
+      upd(); cdTimer = setInterval(upd, 1000);
+    }
+  }
+
+  function processCSV(text) {
+    var rows = parseCSV(text).filter(function (r) { return r.join('').trim() !== ''; });
+    if (rows.length < 2) { render([]); return; }
+    var head = rows[0].map(function (h) { return h.trim().toLowerCase().replace(/"/g, ''); });
+    var ix = function (n) { return head.indexOf(n); };
+    var iD = ix('date'), iT = ix('title'), iS = ix('support'), iL = ix('location'), iK = ix('tickets');
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var events = [];
+    for (var r = 1; r < rows.length; r++) {
+      var c = rows[r], dt = parseDate(iD > -1 ? c[iD] : '');
+      if (!dt || !(iT > -1 && String(c[iT]).trim())) continue;
+      if (dt.getTime() < today.getTime()) continue;
+      events.push({ date: dt, title: c[iT], support: iS > -1 ? c[iS] : '', loc: iL > -1 ? c[iL] : '', tix: iK > -1 ? c[iK] : '' });
+    }
+    events.sort(function (a, b) { return a.date - b.date; });
+    render(events);
+  }
+
+  function getText(url) {
+    return new Promise(function (resolve, reject) {
+      var ctl = window.AbortController ? new AbortController() : null;
+      var t = setTimeout(function () { if (ctl) ctl.abort(); reject(new Error('timeout')); }, 9000);
+      fetch(url, ctl ? { signal: ctl.signal } : undefined).then(function (r) {
+        clearTimeout(t); if (!r.ok) throw new Error(r.status); return r.text();
+      }).then(resolve, function (e) { clearTimeout(t); reject(e); });
+    });
+  }
+
+  function loadEvents() {
+    var csv = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:csv&gid=0';
+    var tries = [csv];
+    if (USE_PROXY_FALLBACK) {
+      tries.push('https://corsproxy.io/?' + encodeURIComponent(csv));
+      tries.push('https://api.allorigins.win/raw?url=' + encodeURIComponent(csv));
+    }
+    var i = 0;
+    (function next() {
+      if (i >= tries.length) { showEmpty('Show dates are added here as they are confirmed. Follow on Instagram for the latest.'); return; }
+      getText(tries[i++]).then(processCSV, next);
+    })();
+  }
+
+  if (location.hash === '#sample') {
+    var day = 86400000, now = Date.now();
+    render([
+      { date: new Date(now + 12 * day), title: 'Sample Club Night', support: 'Guest DJ', loc: 'City, UK', tix: 'https://example.com' },
+      { date: new Date(now + 34 * day), title: 'Sample Festival Set', support: '', loc: 'Venue, Ireland', tix: '' },
+      { date: new Date(now + 61 * day), title: 'Sample Resort Party', support: 'Live drums', loc: 'Destination', tix: 'https://example.com' }
+    ], true);
+  } else {
+    loadEvents();
+  }
+})();
+</script>
+
+</body>
+</html>
