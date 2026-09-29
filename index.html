@@ -142,7 +142,10 @@ h2.title {
   display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px 32px; margin-top: 16px;
   padding: clamp(20px, 3vw, 28px) clamp(22px, 3vw, 32px); border: 1px solid rgba(217,164,65,.55); border-radius: 18px;
   background: linear-gradient(90deg, rgba(217,164,65,.14), rgba(217,164,65,.03));
+  transition: border-color .2s, background .2s, transform .2s;
 }
+.req:hover { border-color: var(--gold); background: linear-gradient(90deg, rgba(217,164,65,.24), rgba(217,164,65,.06)); transform: translateY(-2px); }
+.req-go { font-weight: 600; font-size: .82rem; letter-spacing: .1em; text-transform: uppercase; color: var(--gold-hi); }
 .req h3 { font-family: var(--f-display); font-weight: 800; text-transform: uppercase; font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1; }
 .req p { color: var(--mute); margin-top: 6px; }
 
@@ -300,7 +303,7 @@ footer { border-top: 1px solid var(--line); padding-block: 44px calc(44px + env(
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .hero-copy { animation: none; }
-  .tile img, .plat, .btn { transition: none; }
+  .tile img, .plat, .btn, .req { transition: none; }
 }
 </style>
 
@@ -385,14 +388,14 @@ footer { border-top: 1px solid var(--line); padding-block: 44px calc(44px + env(
         </div>
       </a>
     </div>
-    <div class="req">
+    <a class="req" href="https://music.mxdesign.uk/request/" target="_blank" rel="noopener">
       <div>
         <p class="eyebrow">Song requests</p>
         <h3 style="margin-top:8px">Want a track in her set?</h3>
-        <p>Tell Julix what you want to hear next.</p>
+        <p>Tell Julix what you want to hear next. Pick any song from Spotify.</p>
       </div>
-      <a class="btn btn-gold" href="https://music.mxdesign.uk/request/" target="_blank" rel="noopener">Send a request →</a>
-    </div>
+      <span class="req-go">Request via Spotify →</span>
+    </a>
   </div>
 </section>
 
