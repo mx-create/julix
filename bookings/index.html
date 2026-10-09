@@ -97,7 +97,7 @@ details[open] summary{margin-bottom:16px}
       <h1>Booking confirmation</h1>
       <p class="sub">Enter the agreed fee and date. Create the branded PDF, send it on WhatsApp and block the date.</p>
     </div>
-    <span class="pill" id="exampleTag">Example booking</span>
+    <span class="pill" id="exampleTag" hidden>Example booking</span>
   </header>
 
   <div class="grid">
@@ -117,11 +117,11 @@ details[open] summary{margin-bottom:16px}
       <section>
         <h2>The booking <span class="eyebrow gold" id="refShow"></span></h2>
         <div class="fields">
-          <label><span>Client name</span><input id="c_name" value="Jithin Abhraham"></label>
+          <label><span>Client name</span><input id="c_name" placeholder="e.g. Alex Smith" autocomplete="off"></label>
           <label><span>Client WhatsApp</span><input id="c_phone" class="num" placeholder="+44 7700 900123" inputmode="tel"></label>
-          <label><span>Event</span><input id="e_name" value="New Year party"></label>
-          <label><span>Venue / city</span><input id="e_venue" value="Southampton"></label>
-          <label><span>Event date</span><input id="e_date" type="date" value="2027-01-09"></label>
+          <label><span>Event</span><input id="e_name" placeholder="e.g. New Year party"></label>
+          <label><span>Venue / city</span><input id="e_venue" placeholder="e.g. The Loft, Southampton"></label>
+          <label><span>Event date</span><input id="e_date" type="date"></label>
           <label><span>Set time</span>
             <div class="timepair">
               <input id="e_start" type="time" value="21:00" aria-label="Start time">
@@ -142,7 +142,7 @@ details[open] summary{margin-bottom:16px}
           <label><span>Balance due by</span><input id="f_baldue" type="date"></label>
           <label><span>Signed off as</span><input id="b_sign"></label>
           <label><span>Your phone / WhatsApp</span><input id="b_phone" class="num" inputmode="tel"></label>
-          <label class="full"><span>Notes for the venue (optional)</span><textarea id="e_notes" placeholder="e.g. Venue to provide CDJ-3000s and DJM-900, power at the booth, parking for one car."></textarea></label>
+          <label class="full"><span>Notes for the venue (optional)</span><textarea id="e_notes" placeholder="e.g. Venue to provide CDJ-3000s and DJM-900, power at the booth, parking for one car.">Travel and accommodation additional.</textarea></label>
         </div>
         <div class="sums">
           <div><span class="eyebrow">Fee</span><b id="s_total">£0</b></div>
