@@ -462,7 +462,7 @@ $("pdfBtn").addEventListener("click",async()=>{
   const d=pdfData(),blob=buildPdf(window.jspdf.jsPDF,d,FONTS).output("blob"),name=`Julix confirmation ${d.ref}.pdf`;
   if(window.claude){
     const dl=await window.claude.use("downloads");
-    if(!dl){t.textContent="Saving files isn't available here. Use booking.mxdesign.uk.";return;}
+    if(!dl){t.textContent="Saving files isn't available here. Use julix.mxdesign.uk/bookings.";return;}
     try{await dl.save({filename:name,data:blob});t.textContent="PDF saved. Attach it in WhatsApp with the short message.";}
     catch(err){t.textContent=err&&err.code==="declined"?"Save cancelled.":"Couldn't save the PDF here. Try again in a moment.";}
   } else {saveBlob(blob,name);t.textContent="PDF saved to your downloads. Attach it in WhatsApp with the short message.";}
