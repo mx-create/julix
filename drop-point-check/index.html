@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Work out exactly when to cue Deck B so its drop lines up with Deck A — a fast on-the-fly beatmatch calculator for DJs.">
+<meta name="theme-color" content="#0A0A0A">
+<meta property="og:title" content="Drop Point · Julix DJ">
+<meta property="og:description" content="Cue-point calculator for lining up two decks' drops.">
+<meta property="og:type" content="website">
+<meta name="robots" content="noindex">
+<title>Drop Point · Julix DJ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Same ink/gold identity as the main site, with a second accent (rust)
+   for Deck B so the two lanes stay readable against each other. */
+:root {
+  --ink: #0A0A0A;
+  --ink-2: #14110D;
+  --line: #2F2819;
+  --gold: #D9A441;
+  --gold-hi: #EDBF6A;
+  --rust: #C1612F;
+  --peak: #F6E3A6;
+  --idle: #241D12;
+  --paper: #F4F0E8;
+  --mute: #B8B1A4;
+  --dim: #8C8579;
+  --on-gold: #14100A;
+  --on-gold-2: #3A2C10;
+  --f-display: 'Big Shoulders Display', 'Arial Narrow', Impact, sans-serif;
+  --f-body: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+  --f-mono: 'DM Mono', ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--ink); color: var(--paper); font-family: var(--f-body); font-size: 15px; line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--gold-hi); outline-offset: 2px; }
+
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px clamp(16px, 5vw, 28px); border-bottom: 1px solid var(--line); }
+.brand { display: inline-flex; align-items: center; }
+.brand img { height: 24px; width: auto; display: block; }
+.back { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--mute); }
+.back:hover { color: var(--gold-hi); }
+
+.wrap { max-width: 520px; margin: 0 auto; padding-inline: clamp(16px, 5vw, 24px); padding-block: 24px 48px; display: grid; gap: 16px; }
+.eyebrow { font-family: var(--f-mono); font-size: .76rem; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+h1 { font-family: var(--f-display); font-weight: 800; font-size: clamp(1.8rem, 8vw, 2.4rem); text-transform: uppercase; letter-spacing: .01em; margin: 6px 0 0; line-height: 1; }
+.sub { color: var(--mute); font-size: .92rem; margin-top: 10px; max-width: 46ch; }
+
+.answer { background: var(--gold); color: var(--on-gold); border-radius: 18px; padding: clamp(18px, 4vw, 24px); display: grid; gap: 4px; text-align: center; }
+.answer .k { font-family: var(--f-mono); font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; color: var(--on-gold-2); }
+.answer .v { font-family: var(--f-display); font-weight: 900; font-size: clamp(56px, 20vw, 80px); line-height: 1; font-variant-numeric: tabular-nums; word-break: break-word; }
+.answer .x { font-family: var(--f-mono); font-size: .76rem; color: var(--on-gold-2); line-height: 1.5; }
+
+.viz { background: var(--ink-2); border: 1px solid var(--line); border-radius: 18px; padding: clamp(14px, 3vw, 18px); display: grid; gap: 10px; }
+.lane { display: grid; grid-template-columns: 20px 1fr; align-items: center; gap: 8px; }
+.lane .tag { font-family: var(--f-display); font-weight: 800; font-size: 15px; }
+.lane.a .tag { color: var(--gold); }
+.lane.b .tag { color: var(--rust); }
+.blocks { display: flex; gap: 2px; height: 32px; min-width: 0; }
+.blk { flex: 1 1 0; min-width: 0; border-radius: 2px; background: var(--idle); }
+.a .blk.on { background: var(--gold); opacity: .45; }
+.b .blk.on { background: var(--rust); opacity: .5; }
+.blk.start { opacity: 1 !important; }
+.blk.peak { background: var(--peak) !important; opacity: 1 !important; }
+.ticks { display: grid; grid-template-columns: 20px 1fr; gap: 8px; }
+.tickrow { position: relative; height: 16px; font-family: var(--f-mono); font-size: 10.5px; color: var(--dim); }
+.tickrow span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-family: var(--f-mono); font-size: .7rem; letter-spacing: .02em; color: var(--mute); }
+.legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+
+.ctl { background: var(--ink-2); border: 1px solid var(--line); border-radius: 18px; padding: clamp(14px, 3vw, 18px); display: grid; gap: 8px; }
+.ctl.a { border-left: 4px solid var(--gold); }
+.ctl.b { border-left: 4px solid var(--rust); }
+.ctl-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+label { font-family: var(--f-mono); font-size: .68rem; text-transform: uppercase; letter-spacing: .1em; color: var(--mute); font-weight: 500; }
+.numv { font-family: var(--f-display); font-weight: 800; font-size: 26px; font-variant-numeric: tabular-nums; }
+.row { display: flex; align-items: center; gap: 10px; }
+.step { width: 42px; height: 42px; flex: none; font-size: 20px; line-height: 1; border-radius: 10px; border: 1px solid var(--line); background: var(--ink); color: var(--paper); cursor: pointer; }
+.step:hover { border-color: var(--gold); }
+.step:active { transform: translateY(1px); }
+input[type=range] { flex: 1; min-width: 0; height: 42px; accent-color: var(--gold); }
+.ctl.b input[type=range] { accent-color: var(--rust); }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="/" aria-label="Julix, back to home"><img src="/images/logo.png" alt="JULIX" width="719" height="182"></a>
+  <a class="back" href="/">&larr; Home</a>
+</header>
+
+<div class="wrap">
+  <p class="eyebrow">DJ tool</p>
+  <h1>Drop Point</h1>
+  <p class="sub">Work out exactly when to cue Deck B so its drop lands on Deck A's.</p>
+
+  <section class="answer" aria-live="polite">
+    <span class="k" id="k">Cue Deck B to bar</span>
+    <span class="v" id="v">27</span>
+    <span class="x" id="x"></span>
+  </section>
+
+  <section class="viz" aria-hidden="true">
+    <div class="lane a"><span class="tag">A</span><div class="blocks" id="la"></div></div>
+    <div class="lane b"><span class="tag">B</span><div class="blocks" id="lb"></div></div>
+    <div class="ticks"><span></span><div class="tickrow" id="tk"></div></div>
+    <div class="legend">
+      <span><i style="background:var(--gold)"></i>Press play</span>
+      <span><i style="background:var(--rust)"></i>Deck B cue block</span>
+      <span><i style="background:var(--peak)"></i>Peaks line up</span>
+    </div>
+  </section>
+
+  <section class="ctl a">
+    <div class="ctl-top"><label for="now">Deck A &middot; press play at bar</label><span class="numv" id="nowv"></span></div>
+    <div class="row"><button class="step" data-t="now" data-d="-1" aria-label="Down one bar" type="button">&minus;</button><input type="range" id="now" min="1" max="256" value="82"><button class="step" data-t="now" data-d="1" aria-label="Up one bar" type="button">+</button></div>
+  </section>
+  <section class="ctl a">
+    <div class="ctl-top"><label for="pa">Deck A &middot; peak bar</label><span class="numv" id="pav"></span></div>
+    <div class="row"><button class="step" data-t="pa" data-d="-1" aria-label="Down one bar" type="button">&minus;</button><input type="range" id="pa" min="1" max="256" value="95"><button class="step" data-t="pa" data-d="1" aria-label="Up one bar" type="button">+</button></div>
+  </section>
+  <section class="ctl b">
+    <div class="ctl-top"><label for="pb">Deck B &middot; peak bar</label><span class="numv" id="pbv"></span></div>
+    <div class="row"><button class="step" data-t="pb" data-d="-1" aria-label="Down one bar" type="button">&minus;</button><input type="range" id="pb" min="1" max="256" value="40"><button class="step" data-t="pb" data-d="1" aria-label="Up one bar" type="button">+</button></div>
+  </section>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var ids = ['now', 'pa', 'pb'];
+
+  function render() {
+    var n = +$('now').value, a = +$('pa').value, b = +$('pb').value;
+    $('nowv').textContent = n; $('pav').textContent = a; $('pbv').textContent = b;
+    var left = a - n, cue = b - left;
+    var k = $('k'), v = $('v'), x = $('x');
+    if (left < 0) {
+      k.textContent = 'Deck A peak is before the play bar'; v.textContent = '–';
+      x.textContent = 'Move the peak after the play bar.';
+    } else if (cue < 1) {
+      var late = 1 - cue;
+      k.textContent = 'Start Deck B from bar 1 at Deck A bar'; v.textContent = n + late;
+      x.textContent = b + ' − 1 = ' + (b - 1) + ' bars in, so start ' + late + ' bar' + (late === 1 ? '' : 's') + ' later.';
+    } else {
+      k.textContent = 'Cue Deck B to bar'; v.textContent = cue;
+      x.textContent = a + ' − ' + n + ' = ' + left + ' bars · ' + b + ' − ' + left + ' = ' + cue;
+    }
+    draw(n, a, b, left, cue);
+  }
+
+  function draw(n, a, b, left, cue) {
+    var la = $('la'), lb = $('lb'), tk = $('tk');
+    la.innerHTML = ''; lb.innerHTML = ''; tk.innerHTML = '';
+    if (left < 0) return;
+    var pad = 2, from = n - pad, to = a + pad, count = to - from + 1;
+    var startA = cue < 1 ? n + (1 - cue) : n;
+    for (var bar = from; bar <= to; bar++) {
+      var ea = document.createElement('div'); ea.className = 'blk';
+      if (bar >= n && bar <= a) ea.classList.add('on');
+      if (bar === n) ea.classList.add('start');
+      if (bar === a) ea.classList.add('peak');
+      la.appendChild(ea);
+      var eb = document.createElement('div'); eb.className = 'blk';
+      var bBar = cue + (bar - n);
+      if (bar >= startA && bar <= a) eb.classList.add('on');
+      if (bar === startA) eb.classList.add('start');
+      if (bar === a) eb.classList.add('peak');
+      if (bar >= startA) eb.title = 'B ' + bBar;
+      lb.appendChild(eb);
+    }
+    var pos = function (bar) { return (bar - from + 0.5) / count * 100; };
+    var labels = startA === n ? [[n, 'A ' + n + ' · B ' + cue]] : [[n, 'A ' + n], [startA, 'B 1']];
+    labels.push([a, 'A ' + a + ' · B ' + b]);
+    labels.forEach(function (pair) {
+      var s = document.createElement('span');
+      s.style.left = Math.min(85, Math.max(15, pos(pair[0]))) + '%';
+      s.textContent = pair[1];
+      tk.appendChild(s);
+    });
+  }
+
+  ids.forEach(function (id) { $(id).addEventListener('input', render); });
+  document.querySelectorAll('.step').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var t = $(btn.getAttribute('data-t'));
+      t.value = Math.min(256, Math.max(1, +t.value + +btn.getAttribute('data-d')));
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>
