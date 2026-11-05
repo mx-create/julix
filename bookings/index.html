@@ -95,7 +95,7 @@ details[open] summary{margin-bottom:16px}
     <div>
       <a class="brand" href="https://julix.mxdesign.uk" target="_blank" rel="noopener"><img id="brandLogo" alt="JULIX" width="719" height="182"></a>
       <h1>Booking confirmation</h1>
-      <p class="sub">Enter the agreed fee and date. Create the branded PDF, send it on WhatsApp and block the date.</p>
+      <p class="sub">Enter the agreed fee and date. Create the branded PDF or the performance agreement, send it on WhatsApp and block the date.</p>
     </div>
     <span class="pill" id="exampleTag" hidden>Example booking</span>
   </header>
@@ -104,14 +104,18 @@ details[open] summary{margin-bottom:16px}
     <div class="stack">
       <section>
         <h2>Paying into <span class="eyebrow">Locked</span></h2>
+        <div class="seg" id="acctSeg" style="margin-bottom:16px">
+          <button type="button" data-v="uk" aria-pressed="true">UK · £ · Monzo</button>
+          <button type="button" data-v="in">India · ₹ · Axis</button>
+        </div>
         <dl class="locked">
           <div class="full"><dt>Account name</dt><dd id="l_accname"></dd></div>
           <div><dt>Bank</dt><dd id="l_bank"></dd></div>
-          <div><dt>Sort code</dt><dd class="num" id="l_sort"></dd></div>
+          <div><dt id="l_codeLabel">Sort code</dt><dd class="num" id="l_sort"></dd></div>
           <div><dt>Account number</dt><dd class="num" id="l_acc"></dd></div>
           <div class="full"><dt>Email</dt><dd id="l_email"></dd></div>
         </dl>
-        <p class="note">These are fixed in the page, so every PDF and message pays into this account whoever opens it. To change them, the page needs updating.</p>
+        <p class="note">These are fixed in the page, so every PDF and message pays into this account whoever opens it. Pick India for gigs paid in rupees. To change the details, the page needs updating.</p>
       </section>
 
       <section>
@@ -129,11 +133,12 @@ details[open] summary{margin-bottom:16px}
               <input id="e_end" type="time" value="01:00" aria-label="End time">
             </div>
           </label>
-          <label><span>Agreed fee (£)</span><input id="f_total" class="num" type="number" min="0" step="1" value="600"></label>
+          <label><span>Agreed fee (<span id="curSym">£</span>)</span><input id="f_total" class="num" type="number" min="0" step="1" value="600"></label>
           <label><span>Deposit</span>
             <div class="seg" id="depSeg">
               <button type="button" data-v="0">None</button>
               <button type="button" data-v="25">25%</button>
+              <button type="button" data-v="30">30%</button>
               <button type="button" data-v="50" aria-pressed="true">50%</button>
               <button type="button" data-v="100">Full</button>
             </div>
@@ -150,12 +155,33 @@ details[open] summary{margin-bottom:16px}
           <div><span class="eyebrow">Balance</span><b id="s_bal">£0</b></div>
         </div>
       </section>
+      <section>
+        <h2>Agreement details <span class="eyebrow">For the performance agreement</span></h2>
+        <div class="fields">
+          <label class="full"><span>Organisation</span><input id="o_org" placeholder="e.g. Kerala Arts &amp; Crafts Village (KACV)" autocomplete="off"></label>
+          <label class="full"><span>Department (optional)</span><input id="o_dept" placeholder="e.g. Department of Tourism, Government of Kerala"></label>
+          <label><span>Organiser email</span><input id="o_email" type="email" placeholder="name@venue.com" autocomplete="off"></label>
+          <label><span>Organiser website</span><input id="o_web" placeholder="e.g. kacvkovalam.org"></label>
+          <label class="full"><span>Organiser address</span><input id="o_addr" placeholder="e.g. Vellar, Kovalam, Trivandrum, Kerala – 695527"></label>
+          <label><span>Location</span><input id="e_loc" placeholder="e.g. Trivandrum, Kerala"></label>
+          <label><span>Event type</span><input id="e_type" placeholder="e.g. Open festival"></label>
+          <label><span>Package</span><input id="a_pkg" value="Solo DJ performance"></label>
+          <label><span>Performance duration</span><input id="a_dur" placeholder="Worked out from the set time"></label>
+          <label><span>Travel</span><input id="a_travel" value="Included in the agreed fee"></label>
+          <label><span>Accommodation</span><input id="a_accom" value="One room to be provided by the Organiser"></label>
+          <label class="full"><span>Balance to be paid</span><input id="a_balwhen" value="before the Artist's stage entry"></label>
+        </div>
+        <p class="note">The agreement also uses the booking above: client name and WhatsApp become the organiser's contact, and the deposit is the advance, due by the deposit date. Clear the set time to leave start and end blank for the organiser to fill in.</p>
+      </section>
     </div>
 
     <section class="side">
       <span class="eyebrow gold">Step 1</span>
       <h2>Branded PDF</h2>
-      <div class="actions"><button class="btn primary" id="pdfBtn" type="button">Create PDF confirmation</button></div>
+      <div class="actions">
+        <button class="btn primary" id="pdfBtn" type="button">Create PDF confirmation</button>
+        <button class="btn" id="agrBtn" type="button">Download agreement PDF</button>
+      </div>
       <div class="toast" id="pdfToast" role="status"></div>
 
       <div class="block">
@@ -257,11 +283,11 @@ function buildPdf(jsPDF, d, FONTS){
   });
   fill(C.gold);doc.roundedRect(L,y-3,R-L,15,3,3,"F");
   F("DMMono-Medium",8);col(C.onGold2);doc.text("TOTAL AGREED FEE",L+6,y+6,{charSpace:0.35});
-  F("BigShoulders-Black",19);col(C.onGold);doc.text(d.money(d.total),R-6,y+7.4,{align:"right"});
+  F("BigShoulders-Black",19);col(C.onGold);doc.text((d.moneyBig||d.money)(d.total),R-6,y+7.4,{align:"right"});
   y+=20;
 
   // bank
-  const items=[["Account name",d.accName],["Bank",d.bank],["Sort code",d.sort],["Account number",d.acc]].filter(i=>i[1]);
+  const items=[["Account name",d.accName],["Bank",d.bank],[d.codeLabel||"Sort code",d.sort],["Account number",d.acc]].filter(i=>i[1]);
   const rowsN=Math.ceil(items.length/2), extraLines=d.extra?doc.splitTextToSize(d.extra,R-L-12).length:0;
   const bh=22+rowsN*13+extraLines*4.2;
   fill(C.ink2);stroke(C.line);doc.roundedRect(L,y,R-L,bh,3,3,"FD");
@@ -325,12 +351,235 @@ function buildPdf(jsPDF, d, FONTS){
 }
 
 
+// Julix DJ performance agreement (A4, mm). Printable: paper page, ink header band, gold accents.
+// FONTS: {name: base64 TTF}. Body fonts have no ₹ glyph, so body money uses the currency code; the display font has ₹.
+function buildAgreement(jsPDF, d, FONTS){
+  const doc=new jsPDF({unit:"mm",format:"a4"});
+  for(const n in FONTS){doc.addFileToVFS(n+".ttf",FONTS[n]);doc.addFont(n+".ttf",n,"normal");}
+  const C={ink:[10,10,10],text:[24,21,16],body:[58,54,47],dim:[112,105,94],rule:[222,214,198],soft:[247,243,235],
+           gold:[217,164,65],goldText:[150,104,22],goldHi:[237,191,106],paper:[244,240,232],mute:[184,177,164],onGold:[20,16,10],onGold2:[58,44,16]};
+  const fill=c=>doc.setFillColor(...c), stroke=c=>doc.setDrawColor(...c), col=c=>doc.setTextColor(...c);
+  const F=(n,s)=>{doc.setFont(n,"normal");doc.setFontSize(s)};
+  const PT=0.3528;
+  const label=(t,x,y,c=C.dim,align,size=6.8)=>{
+    F("DMMono-Medium",size);col(c);t=String(t).toUpperCase();
+    const sp=size*0.12*PT;
+    if(align==="right") x-=doc.getTextWidth(t)+sp*(t.length-1);
+    doc.text(t,x,y,{charSpace:sp});
+  };
+  const W=210,L=18,R=192,CW=R-L,TOP=22,BOTTOM=274;
+  let y=0;
+
+  const runningHead=()=>{
+    fill([255,255,255]);doc.rect(0,0,W,297,"F");
+    F("BigShoulders-Black",12);col(C.text);doc.text("JULIX",L,13);
+    label("DJ performance agreement  ·  "+d.ref,R,13,C.dim,"right");
+    stroke(C.rule);doc.setLineWidth(0.3);doc.line(L,16,R,16);
+    y=TOP+4;
+  };
+  const room=h=>{if(y+h>BOTTOM){doc.addPage();runningHead();}};
+
+  const section=(n,title)=>{
+    room(22);
+    F("DMMono-Medium",8);col(C.goldText);doc.text(String(n).padStart(2,"0"),L,y);
+    F("BigShoulders-Black",14);col(C.text);doc.text(title.toUpperCase(),L+8,y+0.3);
+    stroke(C.gold);doc.setLineWidth(0.5);doc.line(L,y+2.6,R,y+2.6);doc.setLineWidth(0.3);
+    y+=8;
+  };
+  // value or a blank line to fill in by hand
+  const value=(v,x,yy,w,font="Instrument-SemiBold",size=10)=>{
+    if(v){F(font,size);col(C.text);const t=doc.splitTextToSize(String(v),w);doc.text(t,x,yy,{lineHeightFactor:1.25});return t.length;}
+    stroke(C.dim);doc.setLineWidth(0.2);doc.line(x,yy+0.8,x+Math.min(w,60),yy+0.8);doc.setLineWidth(0.3);return 1;
+  };
+  const lineH=size=>size*PT*1.25;
+  // 2-column grid of label-over-value; [label, value, full?]
+  const grid=items=>{
+    const gw=(CW-8)/2;let i=0;
+    while(i<items.length){
+      const row=items[i][2]?[items[i++]]:[items[i++],items[i]&&!items[i][2]?items[i++]:null].filter(Boolean);
+      F("Instrument-SemiBold",10);
+      const hs=row.map(it=>Math.max(1,it[1]?doc.splitTextToSize(String(it[1]),it[2]?CW:gw).length:1));
+      const h=4.6+Math.max(...hs)*lineH(10)+3;room(h);
+      row.forEach((it,j)=>{const x=L+j*(gw+8);label(it[0],x,y);value(it[1],x,y+5,it[2]?CW:gw);});
+      y+=h;
+    }
+  };
+  const para=(t,size=9.5,c=C.body,indent=0)=>{
+    F("Instrument-Regular",size);col(c);const lines=doc.splitTextToSize(t,CW-indent);
+    const h=lines.length*lineH(size);room(h);doc.text(lines,L+indent,y,{lineHeightFactor:1.25});y+=h+1.5;
+  };
+  const bullet=t=>{
+    F("Instrument-Regular",9.5);const lines=doc.splitTextToSize(t,CW-6);const h=lines.length*lineH(9.5);room(h);
+    fill(C.gold);doc.circle(L+1.4,y-1.1,0.8,"F");col(C.body);doc.text(lines,L+6,y,{lineHeightFactor:1.25});y+=h+1.8;
+  };
+
+  // ---- page 1 header band
+  fill([255,255,255]);doc.rect(0,0,W,297,"F");
+  fill(C.ink);doc.rect(0,0,W,40,"F");
+  if(d.logo){const lw=52;doc.addImage(d.logo.data,d.logo.fmt,L,13,lw,lw*d.logo.h/d.logo.w);}
+  else {F("BigShoulders-Black",34);col(C.paper);doc.text("JULIX",L,29);}
+  label("Agreement ref",R,13,C.gold,"right");
+  F("BigShoulders-Black",18);col(C.paper);doc.text(d.ref,R,21,{align:"right"});
+  label("Issued "+d.issued,R,27,C.mute,"right");
+  if(d.website){F("DMMono-Regular",8);col(C.goldHi);const w=doc.getTextWidth(d.website);doc.text(d.website,R-w,33);doc.link(R-w,30,w,4,{url:"https://"+d.website.replace(/^https?:\/\//,"")});}
+  y=54;
+  F("BigShoulders-Black",26);col(C.text);doc.text("DJ PERFORMANCE AGREEMENT",L,y);
+  y+=7;
+  para("This agreement confirms the booking and performance arrangements between the Artist and the Organiser.",10,C.body);
+  y+=3;
+
+  // ---- 1. Parties: two panels side by side
+  section(1,"Parties");
+  {
+    const pw=(CW-6)/2, lw=27;
+    const A=[["Artist name",d.artist.name],["Legal name",d.artist.legal],["Phone",d.artist.phone],["Email",d.artist.email],["Website",d.website]].filter(r=>r[1]);
+    const O=[["Organisation",d.org.name],["Department",d.org.dept],["Contact person",d.org.contact],["Email",d.org.email],["Phone",d.org.phone],["Address",d.org.address],["Website",d.org.website]].filter(r=>r[1]);
+    F("Instrument-Regular",9);
+    const hOf=rows=>rows.reduce((s,r)=>s+doc.splitTextToSize(String(r[1]),pw-lw-10).length*lineH(9)+1.6,0);
+    const ph=12+Math.max(hOf(A),hOf(O))+3;room(ph);
+    [[L,"Artist / service provider",A],[L+pw+6,"Organiser / client",O]].forEach(([x,t,rows])=>{
+      fill(C.soft);stroke(C.rule);doc.roundedRect(x,y,pw,ph,2.5,2.5,"FD");
+      label(t,x+5,y+7,C.goldText);
+      let yy=y+12.5;
+      rows.forEach(([k,v])=>{
+        label(k,x+5,yy,C.dim,null,6.2);
+        F("Instrument-Regular",9);col(C.text);const lines=doc.splitTextToSize(String(v),pw-lw-10);
+        doc.text(lines,x+5+lw,yy,{lineHeightFactor:1.25});yy+=lines.length*lineH(9)+1.6;
+      });
+    });
+    y+=ph+7;
+  }
+
+  // ---- 2. Event details
+  section(2,"Event details");
+  grid([["Event name",d.event.name],["Event date",d.event.date],
+        ["Venue",d.event.venue],["Location",d.event.location],
+        ["Performance start time",d.event.start],["Performance end time",d.event.end],
+        ["Performance duration",d.event.duration],["Event type",d.event.type]]);
+  y+=1;
+
+  // ---- 3. Performance & fee
+  room(56);
+  section(3,"Performance & fee");
+  grid([["Selected package",d.pkg],["Travel",d.travel],["Accommodation",d.accommodation,true]]);
+  room(16);
+  fill(C.gold);doc.roundedRect(L,y-1,CW,13,2.5,2.5,"F");
+  F("DMMono-Medium",7.5);col(C.onGold2);doc.text("AGREED PERFORMANCE FEE",L+6,y+6.6,{charSpace:0.3});
+  F("BigShoulders-Black",18);col(C.onGold);doc.text(d.moneyBig(d.fee)+"  "+d.cur,R-6,y+7.6,{align:"right"});
+  y+=17;
+  para("The Artist agrees to deliver a professional DJ performance for the duration specified above.");
+  y+=4;
+
+  // ---- 4. Booking & payment terms
+  section(4,"Booking & payment terms");
+  {
+    room(36);
+    label("Instalment",L,y);label("Due",112,y);label("Amount",R,y,C.dim,"right");
+    stroke(C.rule);doc.line(L,y+2.5,R,y+2.5);y+=8;
+    const rows=d.advPct>0&&d.advPct<100
+      ?[[`Advance (${d.advPct}%) to secure the booking`,d.advDue?"By "+d.advDue:"",d.adv],[`Balance (${100-d.advPct}%)`,d.balWhen,d.bal]]
+      :[["Full performance fee",d.advPct===100?(d.advDue?"By "+d.advDue:""):d.balWhen,d.fee]];
+    rows.forEach(r=>{
+      F("Instrument-Regular",9.5);col(C.text);doc.text(r[0],L,y);
+      F("Instrument-Regular",9);col(C.body);const due=doc.splitTextToSize(r[1]||"—",50);doc.text(due,112,y,{lineHeightFactor:1.2});
+      F("Instrument-SemiBold",9.5);col(C.text);doc.text(d.money(r[2]),R,y,{align:"right"});
+      const h=Math.max(1,due.length)*lineH(9)+3.5;stroke(C.rule);doc.line(L,y+h-2.8,R,y+h-2.8);y+=h+2;
+    });
+    y+=2;
+  }
+  if(d.advPct>0&&d.advPct<100) bullet(`A ${d.advPct}% advance payment (${d.money(d.adv)}) is required${d.advDue?" by "+d.advDue:""} to secure the booking.`);
+  if(d.advPct>0&&d.advPct<100) bullet(`The remaining ${100-d.advPct}% (${d.money(d.bal)}) must be paid in full ${d.balWhen}.`);
+  bullet(`The booking will be considered confirmed upon receipt of the ${d.advPct>0?"advance payment":"signed agreement"}${d.advPct>0?" and signing of this agreement by both parties":" by both parties"}.`);
+  bullet(`Payments must be made to the bank account specified below, quoting reference ${d.ref}.`);
+  y+=2;
+
+  // ---- 5. Bank details
+  section(5,"Bank details");
+  {
+    const items=[["Account holder",d.bank.holder],["Bank name",d.bank.name],["Account number",d.bank.acc],[d.bank.codeLabel||"IFSC code",d.bank.code]];
+    const bh=31;room(bh);
+    fill(C.soft);stroke(C.rule);doc.roundedRect(L,y,CW,bh,2.5,2.5,"FD");
+    const cw=(CW-12)/2;
+    items.forEach((it,i)=>{
+      const x=L+6+(i%2)*cw, yy=y+7.5+Math.floor(i/2)*12.5;
+      label(it[0],x,yy);
+      if(it[1]){F(/number|code/i.test(it[0])?"DMMono-Medium":"Instrument-SemiBold",10.5);col(C.text);doc.text(String(it[1]),x,yy+5.5);}
+      else value("",x,yy+5.5,cw-8);
+    });
+    y+=bh+7;
+  }
+
+  // ---- 6. Technical & hospitality
+  section(6,"Technical & hospitality requirements");
+  para("The Artist's technical rider and hospitality requirements will be shared separately and shall form part of this agreement.");
+  para("The Organiser agrees to provide the necessary arrangements as specified in the technical and hospitality rider.");
+  // tappable buttons that always open the latest files on the website
+  if(d.downloads&&d.downloads.length){
+    room(20);
+    const bw=58,bh=10;let x=L;
+    d.downloads.forEach(([t,url])=>{
+      fill(C.ink);doc.roundedRect(x,y,bw,bh,5,5,"F");
+      F("DMMono-Medium",7.5);col(C.goldHi);t=t.toUpperCase();
+      const tw=doc.getTextWidth(t)+0.3*(t.length-1);
+      doc.text(t,x+(bw-tw)/2,y+6.2,{charSpace:0.3});
+      doc.link(x,y,bw,bh,{url});x+=bw+5;
+    });
+    y+=bh+4.5;
+    if(d.pressPass){F("DMMono-Regular",7.5);col(C.dim);const t0="Latest versions on "+(d.website||"the website")+".  Password:  ";doc.text(t0,L,y);
+      F("DMMono-Medium",7.5);col(C.text);doc.text(d.pressPass,L+doc.getTextWidth(t0),y);y+=6;}
+  }
+  y+=2;
+
+  // ---- 7. Agreement & signatures (kept together)
+  room(88);
+  section(7,"Agreement & signatures");
+  para("Both parties acknowledge and agree to the event details, performance fee and payment terms outlined in this agreement.");
+  y+=4;
+  {
+    const pw=(CW-10)/2;
+    const cols=[[L,"For the Organiser",[["Organisation",d.org.name],["Authorised representative",""],["Designation",""]]],
+                [L+pw+10,"For the Artist",[["Artist name",d.artist.name],["Legal name",d.artist.legal],["Contact number",d.artist.phone]]]];
+    const y0=y;let maxY=y;
+    cols.forEach(([x,t,rows])=>{
+      let yy=y0;
+      label(t,x,yy,C.goldText,null,7.2);yy+=8;
+      rows.forEach(([k,v])=>{label(k,x,yy,C.dim,null,6.2);if(v){F("Instrument-SemiBold",10);col(C.text);doc.text(String(v),x,yy+5);}else{stroke(C.dim);doc.setLineWidth(0.2);doc.line(x,yy+5.6,x+pw,yy+5.6);}yy+=10.5;});
+      // signature box + date
+      yy+=1;label("Signature",x,yy,C.dim,null,6.2);
+      stroke(C.rule);doc.setLineWidth(0.3);fill([255,255,255]);doc.roundedRect(x,yy+2,pw,16,2,2,"S");
+      yy+=23;label("Date",x,yy,C.dim,null,6.2);stroke(C.dim);doc.setLineWidth(0.2);doc.line(x,yy+5.6,x+pw*0.6,yy+5.6);
+      yy+=9;maxY=Math.max(maxY,yy);
+    });
+    y=maxY;
+  }
+
+  // ---- footers
+  const n=doc.getNumberOfPages();
+  for(let p=1;p<=n;p++){
+    doc.setPage(p);
+    stroke(C.rule);doc.setLineWidth(0.3);doc.line(L,283,R,283);
+    F("DMMono-Regular",7);col(C.dim);
+    doc.text(`Julix · DJ performance agreement · ${d.ref}`,L,288.5);
+    doc.text(`Page ${p} of ${n}`,R,288.5,{align:"right"});
+  }
+  return doc;
+}
+
 const $=id=>document.getElementById(id);
 // Fixed business details: nobody using the page can change where money goes
+// Two accounts: UK gigs in pounds, India gigs in rupees. The picker only switches between these.
+const ACCOUNTS={
+  uk:{accName:"Julia Fernandez (trading as Julix & Mx)", bank:"Monzo Bank", codeLabel:"Sort code", sort:"04-00-03", acc:"53975779",
+      extra:"Prefer to pay by card? We can send a Stripe payment link (a 2% surcharge applies to card payments).",
+      cur:"GBP", sym:"£", locale:"en-GB", tz:"Europe/London"},
+  in:{accName:"Julia Fernandez", bank:"Axis Bank", codeLabel:"IFSC code", sort:"UTIB0004447", acc:"926010047324949",
+      extra:"", cur:"INR", sym:"₹", locale:"en-IN", tz:"Asia/Kolkata"}
+};
+// Artist details printed on the performance agreement
+const ARTIST={name:"DJ JULIX", legal:"Julia Fernandez", phone:"+44 7587 328287", website:"music.mxdesign.uk",
+  downloads:[["Download tech rider","https://music.mxdesign.uk/?get=rider"],["Download press kit","https://music.mxdesign.uk/?get=presskit"]]};
 const BIZ_FIXED={
-  accName:"Julia Fernandez (trading as Julix & Mx)", bank:"Monzo Bank", sort:"04-00-03", acc:"53975779",
   email:"julix.mx@outlook.com",
-  extra:"Prefer to pay by card? We can send a Stripe payment link (a 2% surcharge applies to card payments).",
   press:"https://music.mxdesign.uk/#press", pressPass:"julixmedia2026",
   terms:"A non-refundable deposit is required to secure the booking, with the remaining balance due before or on the day of the event. Cancellations made within the agreed notice period may be subject to additional charges, and deposits are non-refundable. The client must ensure safe access to the venue, adequate power supply, and any necessary licences or permissions for music. The DJ is not liable for interruptions caused by power failures, venue restrictions, or circumstances beyond their control, and the client is responsible for guest conduct. Any damage to equipment caused by guests or venue staff will be charged to the client. In the unlikely event of illness, accident, or unforeseen circumstances preventing performance, the DJ will make reasonable efforts to provide a replacement or offer a refund."
 };
@@ -340,10 +589,17 @@ let depPct=50;
 const LOGO={data:"data:image/png;base64,"+LOGO_B64,w:719,h:182,fmt:"PNG"};
 $("brandLogo").src=LOGO.data;
 for(const k in DEFAULTS) $(k).value=DEFAULTS[k];
-[["l_accname","accName"],["l_bank","bank"],["l_sort","sort"],["l_acc","acc"],["l_email","email"]].forEach(([id,k])=>$(id).textContent=BIZ_FIXED[k]);
-const B=BIZ_FIXED;
+let B;
+function setAccount(k){
+  B={...BIZ_FIXED,...ACCOUNTS[k]};
+  [["l_accname","accName"],["l_bank","bank"],["l_sort","sort"],["l_acc","acc"],["l_email","email"],["l_codeLabel","codeLabel"],["curSym","sym"]].forEach(([id,k])=>$(id).textContent=B[k]);
+}
+setAccount("uk");
 
-const gbp=n=>"£"+(Math.round(n*100)/100).toLocaleString("en-GB",{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2});
+const amount=n=>(Math.round(n*100)/100).toLocaleString(B.locale,{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2});
+const gbp=n=>B.sym+amount(n); // money in the account's currency (name kept from when it was pounds only)
+// The PDF body fonts have no ₹ glyph, so rupees print as "INR 90,000" there; the display font has ₹.
+const pdfMoney=n=>B.cur==="INR"?"INR "+amount(n):gbp(n);
 const nice=d=>d?new Date(d+"T12:00:00").toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric"}):"";
 const short=d=>d?new Date(d+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}):"";
 const shortDay=d=>d?new Date(d+"T12:00:00").toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short",year:"numeric"}):"";
@@ -392,7 +648,7 @@ function build(){
     L.push("","*BANK TRANSFER DETAILS*");
     if(B.accName) L.push(`Account name: ${B.accName}`);
     if(B.bank) L.push(`Bank: ${B.bank}`);
-    L.push(`Sort code: ${B.sort||"[sort code]"}`,`Account no: ${B.acc||"[account number]"}`,`Reference: *${ref}*`);
+    L.push(`${B.codeLabel}: ${B.sort||"["+B.codeLabel.toLowerCase()+"]"}`,`Account no: ${B.acc||"[account number]"}`,`Reference: *${ref}*`);
     if(B.extra) L.push(B.extra);
     L.push("",depPct>0?"The date is held for you once the deposit lands. Please use the reference above so we can match your payment.":"Please use the reference above when you pay so we can match it.");
     if(v("e_notes")) L.push("","*NOTES*",v("e_notes"));
@@ -426,7 +682,7 @@ function updateCal(){
   const w=eventWindow(),c=calDetails(),g=$("gcalBtn");
   if(!w){g.setAttribute("aria-disabled","true");return;}
   g.removeAttribute("aria-disabled");
-  g.href="https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(c.title)+"&dates="+w.start+"/"+w.end+"&ctz=Europe/London&location="+encodeURIComponent(c.loc)+"&details="+encodeURIComponent(c.desc);
+  g.href="https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(c.title)+"&dates="+w.start+"/"+w.end+"&ctz="+B.tz+"&location="+encodeURIComponent(c.loc)+"&details="+encodeURIComponent(c.desc);
 }
 function saveBlob(blob,name){
   const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();
@@ -437,7 +693,7 @@ $("icsBtn").addEventListener("click",()=>{
   const c=calDetails(),esc=s=>s.replace(/[\\,;]/g,m=>"\\"+m).replace(/\n/g,"\\n");
   const now=new Date().toISOString().replace(/[-:]/g,"").slice(0,15)+"Z";
   const ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Julix & Mx//Bookings//EN","BEGIN:VEVENT","UID:"+reference()+"@mxdesign.uk","DTSTAMP:"+now,
-    "DTSTART;TZID=Europe/London:"+w.start,"DTEND;TZID=Europe/London:"+w.end,"SUMMARY:"+esc(c.title),"LOCATION:"+esc(c.loc),"DESCRIPTION:"+esc(c.desc),
+    "DTSTART;TZID="+B.tz+":"+w.start,"DTEND;TZID="+B.tz+":"+w.end,"SUMMARY:"+esc(c.title),"LOCATION:"+esc(c.loc),"DESCRIPTION:"+esc(c.desc),
     "STATUS:CONFIRMED","TRANSP:OPAQUE","END:VEVENT","END:VCALENDAR"].join("\r\n");
   saveBlob(new Blob([ics],{type:"text/calendar"}),reference()+".ics");
   $("calToast").textContent="Calendar file saved. Open it to add the gig.";
@@ -451,21 +707,41 @@ function pdfData(){
   return {ref:reference(),issued:short(today()),client:v("c_name"),clientPhone:v("c_phone")||"",
     event:v("e_name"),dateShort:shortDay(v("e_date")),time:setTime(),duration:duration(),venue:v("e_venue"),
     total,depPct,dep,bal,depDue:short(v("f_depdue")),balDue:short(v("f_baldue")),
-    accName:B.accName,bank:B.bank,sort:B.sort,acc:B.acc,extra:B.extra,
+    accName:B.accName,bank:B.bank,codeLabel:B.codeLabel,sort:B.sort,acc:B.acc,extra:B.extra,
     notes:v("e_notes"),sign:v("b_sign"),phone:v("b_phone"),email:B.email,
-    pressUrl:B.press,pressPass:B.pressPass,terms:B.terms,logo:LOGO,money:gbp};
+    pressUrl:B.press,pressPass:B.pressPass,terms:B.terms,logo:LOGO,money:pdfMoney,moneyBig:gbp};
 }
-$("pdfBtn").addEventListener("click",async()=>{
+function agreementData(){
+  const {total,dep,bal}=money(), mins=(()=>{const s=v("e_start"),e=v("e_end");if(!s||!e)return 0;let m=(+e.slice(0,2)*60+ +e.slice(3))-(+s.slice(0,2)*60+ +s.slice(3));return m<=0?m+1440:m})();
+  const hrs=mins/60, dur=v("a_dur")||(mins?(hrs%1?hrs.toFixed(1):hrs)+" hour"+(hrs===1?"":"s"):"");
+  return {ref:reference(),issued:short(today()),website:ARTIST.website,logo:LOGO,
+    artist:{name:ARTIST.name,legal:ARTIST.legal,phone:ARTIST.phone,email:B.email},
+    org:{name:v("o_org"),dept:v("o_dept"),contact:v("c_name"),email:v("o_email"),phone:v("c_phone"),address:v("o_addr"),website:v("o_web")},
+    event:{name:v("e_name"),date:nice(v("e_date")),type:v("e_type"),venue:v("e_venue"),location:v("e_loc"),start:hm(v("e_start")),end:hm(v("e_end")),duration:dur},
+    pkg:v("a_pkg"),fee:total,cur:B.cur,money:pdfMoney,moneyBig:gbp,travel:v("a_travel"),accommodation:v("a_accom"),
+    advPct:depPct,adv:dep,bal,advDue:short(v("f_depdue")),balWhen:v("a_balwhen")||"before the event",
+    bank:{holder:B.accName,name:B.bank,acc:B.acc,code:B.sort,codeLabel:B.codeLabel},
+    downloads:ARTIST.downloads,pressPass:B.pressPass};
+}
+async function savePdf(make,name,done){
   const t=$("pdfToast");
   if(!window.jspdf){t.textContent="The PDF maker didn't load. Check your connection and reload the page.";return;}
   t.textContent="Creating PDF…";
-  const d=pdfData(),blob=buildPdf(window.jspdf.jsPDF,d,FONTS).output("blob"),name=`Julix confirmation ${d.ref}.pdf`;
+  const blob=make(window.jspdf.jsPDF).output("blob");
   if(window.claude){
     const dl=await window.claude.use("downloads");
     if(!dl){t.textContent="Saving files isn't available here. Use julix.mxdesign.uk/bookings.";return;}
-    try{await dl.save({filename:name,data:blob});t.textContent="PDF saved. Attach it in WhatsApp with the short message.";}
+    try{await dl.save({filename:name,data:blob});t.textContent="PDF saved. "+done;}
     catch(err){t.textContent=err&&err.code==="declined"?"Save cancelled.":"Couldn't save the PDF here. Try again in a moment.";}
-  } else {saveBlob(blob,name);t.textContent="PDF saved to your downloads. Attach it in WhatsApp with the short message.";}
+  } else {saveBlob(blob,name);t.textContent="PDF saved to your downloads. "+done;}
+}
+$("pdfBtn").addEventListener("click",()=>{
+  const d=pdfData();
+  savePdf(J=>buildPdf(J,d,FONTS),`Julix confirmation ${d.ref}.pdf`,"Attach it in WhatsApp with the short message.");
+});
+$("agrBtn").addEventListener("click",()=>{
+  const d=agreementData();
+  savePdf(J=>buildAgreement(J,d,FONTS),`Julix agreement ${d.ref}${d.org.name?" "+d.org.name.replace(/[^\w ]+/g," ").replace(/\s+/g," ").trim():""}.pdf`,"Send it to the organiser to sign.");
 });
 
 /* events */
@@ -479,6 +755,10 @@ $("shortMsg").addEventListener("change",build);
 $("depSeg").addEventListener("click",e=>{
   const b=e.target.closest("button");if(!b)return;depPct=+b.dataset.v;
   [...$("depSeg").children].forEach(x=>x.setAttribute("aria-pressed",x===b));build();
+});
+$("acctSeg").addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;setAccount(b.dataset.v);
+  [...$("acctSeg").children].forEach(x=>x.setAttribute("aria-pressed",x===b));build();
 });
 $("copyBtn").addEventListener("click",()=>{
   const t=build();
